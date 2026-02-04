@@ -1,0 +1,7 @@
+{
+  "name": "ShieldAI Security Suite",
+  "description": "A cutting-edge cybersecurity platform featuring AI-generated voice detection across 5 Indian languages and an agentic honey-pot system for scam intelligence extraction.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
