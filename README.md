@@ -19,22 +19,15 @@ View your app in AI Studio: https://ai.studio/apps/drive/1TYfBSZqZNZEp7NNzD4BKMm
 3. Run the app:
    `npm run dev`
 
-## Netlify Deployment
+## Vercel Deployment
 
-This project is optimized for deployment on Netlify using Netlify Functions.
+This project is optimized for deployment on Vercel.
 
 ### 1. Deployment Steps
-- Connect your repository to Netlify.
-- Netlify will automatically detect the `netlify.toml` settings.
-- Build command: `npm run build`
-- Publish directory: `dist`
-- Functions directory: `functions`
+- Connect your repository to Vercel.
+- Vercel will automatically detect the configuration.
+- The Rewrites in `vercel.json` will handle routing.
 
 ### 2. Environment Variables
-You MUST add the following environment variable in the Netlify UI (Site settings -> Build & deploy -> Environment):
+You MUST add the following environment variable in the Vercel Project Settings (Settings -> Environment Variables):
 - `GEMINI_API_KEY`: Your Google Gemini API Key.
-
-### 3. Local Development (with Netlify simulation)
-```bash
-npx netlify dev
-```
