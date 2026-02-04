@@ -70,7 +70,12 @@ apiRouter.post('/honeypot', authenticate, (async (req: Request, res: Response) =
       payload.conversationHistory || [],
       payload.metadata?.language || 'English'
     );
-    res.json({ status: "success", reply: result.reply });
+    res.json({
+      status: "success",
+      reply: result.reply,
+      extracted: result.extracted,
+      isFinished: result.isFinished
+    });
 
     if (result.isFinished || (result.extracted && (result.extracted.upiIds?.length > 0))) {
       geminiService.triggerGuviCallback(payload.sessionId, result, (payload.conversationHistory?.length || 0) + 1);

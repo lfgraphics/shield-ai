@@ -69,13 +69,16 @@ const ScamHoneypot: React.FC = () => {
       setMessages(prev => [...prev, agentMessage]);
 
       // Merge Intelligence and Deduplicate
-      setIntelligence(prev => ({
-        bankAccounts: Array.from(new Set([...prev.bankAccounts, ...(result.extracted?.bankAccounts || [])])),
-        upiIds: Array.from(new Set([...prev.upiIds, ...(result.extracted?.upiIds || [])])),
-        phishingLinks: Array.from(new Set([...prev.phishingLinks, ...(result.extracted?.phishingLinks || [])])),
-        phoneNumbers: Array.from(new Set([...prev.phoneNumbers, ...(result.extracted?.phoneNumbers || [])])),
-        suspiciousKeywords: Array.from(new Set([...prev.suspiciousKeywords, ...(result.extracted?.suspiciousKeywords || [])])),
-      }));
+      setIntelligence(prev => {
+        const extracted = result.extracted || {};
+        return {
+          bankAccounts: Array.from(new Set([...prev.bankAccounts, ...(extracted.bankAccounts || [])])),
+          upiIds: Array.from(new Set([...prev.upiIds, ...(extracted.upiIds || [])])),
+          phishingLinks: Array.from(new Set([...prev.phishingLinks, ...(extracted.phishingLinks || [])])),
+          phoneNumbers: Array.from(new Set([...prev.phoneNumbers, ...(extracted.phoneNumbers || [])])),
+          suspiciousKeywords: Array.from(new Set([...prev.suspiciousKeywords, ...(extracted.suspiciousKeywords || [])])),
+        };
+      });
 
       if (result.isFinished) {
         setIsFinished(true);

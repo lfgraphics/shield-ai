@@ -45,8 +45,9 @@ export class GeminiService {
         confidenceScore: parsed.confidenceScore || 0.5,
         explanation: parsed.explanation || "Analysis complete."
       };
-    } catch (error) {
-      return { status: 'error', language, classification: 'HUMAN', confidenceScore: 0, explanation: "Engine Error" };
+    } catch (error: any) {
+      console.error("Gemini DetectVoice Error:", error);
+      return { status: 'error', language, classification: 'HUMAN', confidenceScore: 0, explanation: "Engine Error: " + (error.message || "Unknown Error") };
     }
   }
 
