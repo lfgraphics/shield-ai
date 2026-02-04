@@ -86,6 +86,7 @@ const VoiceDetector: React.FC = () => {
         },
         body: JSON.stringify({
           language: selectedLanguage,
+          audioFormat: 'mp3',
           audioBase64: base64
         })
       });

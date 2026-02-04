@@ -22,6 +22,12 @@ app.use(cors() as any);
 app.use(express.json({ limit: '50mb' }) as any);
 app.use(express.urlencoded({ extended: true, limit: '50mb' }) as any);
 
+// Request Logger (Helpful for Vercel/Debug)
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  next();
+});
+
 // Auth Middleware
 // Explicitly typing the middleware as RequestHandler to ensure 'req.headers' and 'res.status' are correctly recognized by the TypeScript compiler.
 const authenticate: RequestHandler = (req, res, next) => {
@@ -110,8 +116,8 @@ app.get('*', (req: Request, res: Response) => {
   res.sendFile(path.join(distPath, 'index.html'));
 });
 
-// Only start the server if not running in a Netlify environment
-if (!process.env.NETLIFY) {
+// Only start the server if not running in a Netlify or Vercel environment
+if (!process.env.NETLIFY && !process.env.VERCEL && process.env.NODE_ENV !== 'production') {
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server listening on port ${PORT}`);
   });

@@ -47,9 +47,21 @@ const ScamHoneypot: React.FC = () => {
         },
         body: JSON.stringify({
           sessionId,
-          message: { text: scammerMessage.text },
-          conversationHistory: messages,
-          metadata: { language: 'English' }
+          message: {
+            sender: 'scammer',
+            text: scammerMessage.text,
+            timestamp: scammerMessage.timestamp
+          },
+          conversationHistory: messages.map(m => ({
+            sender: m.sender,
+            text: m.text,
+            timestamp: m.timestamp
+          })),
+          metadata: {
+            channel: 'Chat',
+            language: 'English',
+            locale: 'IN'
+          }
         })
       });
 
