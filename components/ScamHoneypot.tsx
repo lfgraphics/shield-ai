@@ -94,8 +94,6 @@ const ScamHoneypot: React.FC = () => {
 
       if (result.isFinished) {
         setIsFinished(true);
-        // Automatically trigger final report if extraction is complete
-        submitFinalReport();
       }
     } catch (err) {
       console.error(err);
