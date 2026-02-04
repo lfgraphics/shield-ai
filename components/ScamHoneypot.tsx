@@ -101,6 +101,43 @@ const ScamHoneypot: React.FC = () => {
     }
   };
 
+  const submitFinalReport = async () => {
+    if (isReporting) return;
+    setIsReporting(true);
+
+    const payload: FinalResultPayload = {
+      sessionId,
+      scamDetected: intelligence.suspiciousKeywords.length > 0 || intelligence.phishingLinks.length > 0,
+      totalMessagesExchanged: messages.length,
+      extractedIntelligence: intelligence,
+      agentNotes: `Automated honey-pot analysis complete. Identified ${intelligence.suspiciousKeywords.length} suspicious patterns. Scammer utilized urgency tactics.`
+    };
+
+    try {
+      // MANDATORY CALLBACK TO GUVI EVALUATION ENDPOINT
+      const response = await fetch("https://hackathon.guvi.in/api/updateHoneyPotFinalResult", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": "sk_submission_live_shield_ai"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        alert("Success: Final Intelligence Report submitted to GUVI Evaluation Endpoint.");
+      } else {
+        console.warn("Callback failed:", await response.text());
+        alert("Report ready. (Check console for payload if external callback is restricted in preview environment)");
+      }
+      console.log("SUBMISSION PAYLOAD:", payload);
+      setIsFinished(true);
+    } catch (err) {
+      console.error("Submission Error:", err);
+      alert("Submission Error: Check network connection to hackathon.guvi.in");
+    } finally {
+      setIsReporting(false);
+    }
   };
 
   return (

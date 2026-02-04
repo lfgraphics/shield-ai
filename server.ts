@@ -76,10 +76,12 @@ apiRouter.post('/honeypot', authenticate, (async (req: Request, res: Response) =
       payload.conversationHistory || [],
       payload.metadata?.language || 'English'
     );
-    // Strictly aligned with documentation (Problem 2 Section 8)
+    // Return full payload for UI intelligence dashboard
     res.json({
       status: "success", 
-      reply: result.reply
+      reply: result.reply,
+      extracted: result.extracted,
+      isFinished: result.isFinished
     });
 
     if (result.isFinished || (result.extracted && (result.extracted.upiIds?.length > 0))) {
