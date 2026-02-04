@@ -34,15 +34,15 @@ const authenticate: RequestHandler = (req, res, next) => {
 };
 
 // --- API ROUTES ---
+const apiRouter = express.Router();
 
 // Health Check
-app.get('/api/health', (req: Request, res: Response) => {
+apiRouter.get('/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', service: 'ShieldAI' });
 });
 
 // Problem 1: Voice Detection
-// Wrapped in RequestHandler to ensure compatibility with Express's route handler signatures.
-app.post('/api/voice-detection', authenticate, (async (req: Request, res: Response) => {
+apiRouter.post('/voice-detection', authenticate, (async (req: Request, res: Response) => {
   try {
     const { language, audioBase64 } = req.body;
     if (!audioBase64) {
@@ -58,8 +58,7 @@ app.post('/api/voice-detection', authenticate, (async (req: Request, res: Respon
 }) as RequestHandler);
 
 // Problem 2: Honeypot
-// Wrapped in RequestHandler to ensure compatibility with Express's route handler signatures.
-app.post('/api/honeypot', authenticate, (async (req: Request, res: Response) => {
+apiRouter.post('/honeypot', authenticate, (async (req: Request, res: Response) => {
   try {
     const payload = req.body;
     if (!payload.message?.text) {
@@ -80,6 +79,12 @@ app.post('/api/honeypot', authenticate, (async (req: Request, res: Response) => 
     res.status(500).json({ status: 'error', message: 'Honeypot engine failed' });
   }
 }) as RequestHandler);
+
+// Mount the router
+// On Netlify, the function might be invoked with the prefix already stripped or at the root
+// Locally, we expect /api/
+app.use('/api', apiRouter);
+app.use('/', apiRouter);
 
 // --- STATIC & FALLBACK ---
 
