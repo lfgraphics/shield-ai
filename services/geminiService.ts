@@ -15,7 +15,7 @@ export class GeminiService {
     try {
       const ai = this.getAi();
       const response = await ai.models.generateContent({
-        model: "gemini-1.5-flash",
+        model: "gemini-3-flash-preview",
         contents: {
           parts: [
             { inlineData: { mimeType: "audio/mp3", data: audioBase64 } },
@@ -55,7 +55,7 @@ export class GeminiService {
     const ai = this.getAi();
     const prompt = `Persona: Naive user. Goal: Extract scam info. Current: "${text}". History: ${JSON.stringify(history)}. Output JSON.`;
     const response = await ai.models.generateContent({
-      model: "gemini-1.5-flash",
+      model: "gemini-3-pro-preview",
       contents: prompt,
       config: {
         responseMimeType: "application/json",
